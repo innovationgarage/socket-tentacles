@@ -59,7 +59,7 @@ class SendHandler(Handler):
         
 def parse_config(config, handlers):
     for connection in config["connections"]:
-        handler = handlers[connection["direction"]]
+        handler = handlers[connection["handler"]]
         addr = connection["address"].split(":")
         assert addr[0] == "tcp"
         host = "0.0.0.0"
