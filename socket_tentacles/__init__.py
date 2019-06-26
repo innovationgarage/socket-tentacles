@@ -41,9 +41,21 @@ class Connector(threading.Thread):
             time.sleep(1)
 
 class Handler(object):
+    encoding = "utf-8"
+    binary = False
+    filemode = "r"
+    
     def __init__(self, conn):
         self.conn = conn
-
+        self.makefile()
+        self.handle()
+        
+    def makefile(self):
+        args = {"mode": self.filemode + ["", "b"][self.binary]}
+        if not self.binary:
+            args["encoding"] = self.encoding
+        self.file = conn.makefile(**args)
+        
     def handle(self):
         """self.conn is a socket object, self.file a file wrapper for that
         socket"""
@@ -52,14 +64,10 @@ class Handler(object):
         return id(self)
 
 class ReceiveHandler(Handler):
-    def __init__(self, conn):
-        self.file = conn.makefile("r")
-        self.handle()
+    filemode = "r"
     
 class SendHandler(Handler):
-    def __init__(self, conn):
-        self.file = conn.makefile("w")
-        self.handle()
+    filemode = "w"
         
 def parse_config(config, handlers):
     for connection in config["connections"]:
