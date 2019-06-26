@@ -54,7 +54,7 @@ class Handler(object):
         args = {"mode": self.filemode + ["", "b"][self.binary]}
         if not self.binary:
             args["encoding"] = self.encoding
-        self.file = conn.makefile(**args)
+        self.file = self.conn.makefile(**args)
         
     def handle(self):
         """self.conn is a socket object, self.file a file wrapper for that
