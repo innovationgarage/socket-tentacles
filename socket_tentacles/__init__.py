@@ -29,9 +29,12 @@ class Connector(threading.Thread):
         while True:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             try:
-                sock.connect((self._kwargs["host"], self._kwargs["port"]))
-                print("Connector: Connected")
-                self._kwargs["handler"](sock)
+                try:
+                    sock.connect((self._kwargs["host"], self._kwargs["port"]))
+                    print("Connector: Connected")
+                    self._kwargs["handler"](sock)
+                except Exception as e:
+                    print(e)
             finally:
                 sock.close()
             time.sleep(1)
