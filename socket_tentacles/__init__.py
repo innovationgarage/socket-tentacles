@@ -14,13 +14,14 @@ class TCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
         
 class Server(threading.Thread):
     def run(self):
-        print("Server: Started: %s" % self._kwargs)
+        kwargs = self._kwargs
+        print("Server: Started: %s" % kwargs)
         Handler = self._kwargs["handler"]
         class Server(socketserver.BaseRequestHandler):
             def handle(self):
-                print("Server: Connection request received")
+                print("Server: Connection request received: %s" % kwargs)
                 Handler(self.request)
-        self.server = TCPServer((self._kwargs["host"], self._kwargs["port"]), Server)
+        self.server = TCPServer((kwargs["host"], kwargs["port"]), Server)
         self.server.serve_forever()
 
 class Connector(threading.Thread):
@@ -31,7 +32,7 @@ class Connector(threading.Thread):
             try:
                 try:
                     sock.connect((self._kwargs["host"], self._kwargs["port"]))
-                    print("Connector: Connected")
+                    print("Connector: Connected: %s" % self._kwargs)
                     self._kwargs["handler"](sock)
                 except Exception as e:
                     print(e)
