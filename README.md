@@ -24,7 +24,8 @@ Example usage
         with open(sys.argv[1]) as f:
             config = json.load(f)
 
-        socket_tentacles.run(config, {"source": ReceiveHandler, "destination": SendHandler})
+        server = socket_tentacles.Server({"source": ReceiveHandler, "destination": SendHandler})
+        server.configure(config)
 
 Example config.json:
 
@@ -35,3 +36,6 @@ Example config.json:
             {"handler": "destination", "type": "connect", "address": "tcp:localhost:1026"}
         ]
     }
+
+Note: configure() can be called multiple times. A later applied configuration overrides a previously
+applied one. However, already established tcp connections are not closed.

@@ -121,6 +121,6 @@ class Server(object):
         return connhandler(kwargs={"server": self, "host": host, "port": port, "handler": handler})
 
 def run(config, handlers):
-    server = Manager(handlers)
+    server = Server(handlers)
     server.configure(config)
     return server
