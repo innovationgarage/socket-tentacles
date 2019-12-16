@@ -6,6 +6,7 @@ import json
 import queue
 import time
 import datetime
+import traceback
 
 class TCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     def server_bind(self):
@@ -36,6 +37,7 @@ class Connector(threading.Thread):
                     self._kwargs["handler"](sock)
                 except Exception as e:
                     print(e)
+                    traceback.print_exc()
             finally:
                 sock.close()
             time.sleep(1)
